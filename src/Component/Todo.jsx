@@ -7,46 +7,83 @@ import { SnackbarProvider, enqueueSnackbar } from 'notistack'
 
 export default function Todo() {
 
-  const daily_task = ['walk', 'Go to Temple', 'Make breakfast' , 'study', 'sleep']
+  const daily_task = [ {
+    id: 1,
+    title: 'walk',
+    complete: false 
+   }, 
+   {
+    id: 2,
+    title: 'Go to Temple',
+    complete: false 
+   },
+   {
+    id: 3,
+    title: 'Make breakfast',
+    complete: false 
+   },
+   {
+    id: 4,
+    title: 'study',
+    complete: false 
+   },
+   {
+    id: 5,
+    title: 'sleep',
+    complete: false 
+   }
+  ]
+  
 
   const [inputText, setInputText] = useState('')
   const [todoList, setTodoList] = useState(daily_task)
   const [editTodo, setEditTodo] = useState('')
   
-
+//add todo
   function addTaskHandler (e){
-    e.preventDefault();
-    if(!inputText || inputText === ''){
-     enqueueSnackbar('Enter task' )
-    }
-    else{
-     setTodoList((prevState)=> [...prevState, inputText]);
+    if(inputText){
+      let num = todoList.length + 1;
+      let newTask = {id: num, title: inputText, complete: false}
+     setTodoList([...todoList, newTask]);
      setInputText('')
     }
   }
 
-  function completedTodo(todoId){
-    
+  //mark as done
+function handleComplete (id){
+const completeTodo = todoList.map(task => {
+  if(task.id === id){
+    return({...task, complete: !task.complete })
   }
+  return task;
+})
+setTodoList(completeTodo)
+}
 
+//edit todo
   function editHandler (i){
-   setEditTodo(i)
- const updatedTodo = [...todoList]
- setInputText(updatedTodo[i])
-}
+    console.log('edited')
+    setEditTodo(i)
+    const updatedTodo = [...todoList]
+    setInputText(updatedTodo[i].title )
+   }
 
-function updateTaskHandler(e){
+//edit and update edited todo
+function updateTaskHandler(e) {
   e.preventDefault();
-  const getUpdatedTodo = [...todoList]
-  getUpdatedTodo[editTodo] = inputText
-  setTodoList(getUpdatedTodo)
-  setInputText('')
-  setEditTodo('')
+const getupdatedTodo= [...todoList]
+getupdatedTodo[editTodo].title= inputText
+setTodoList(getupdatedTodo)
+setInputText('')
+setEditTodo('')
 }
 
+//delete todo
 function deleteHandler(i){
-  const deletedItem = todoList.filter((item,index) => i !== index)
-  setTodoList(deletedItem)
+  const filteredTodoList = todoList.filter((item,index) => i!== index)
+  console.log(filteredTodoList)
+  setTodoList(filteredTodoList)
+
 }
 
   return (
@@ -74,7 +111,10 @@ function deleteHandler(i){
       </InputGroup>
       
         </div>
-        <TodoList todoList= {todoList} onComplete = {completedTodo} onedit= {editHandler} onDelete= {deleteHandler} />
+        <TodoList todoList= {todoList}
+          onComplete={handleComplete}
+          onedit= {editHandler}
+           onDelete= {deleteHandler} />
     </div>
     </>
   )

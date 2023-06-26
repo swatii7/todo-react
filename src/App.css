@@ -82,7 +82,7 @@ body{
 
 
 .inputTask::placeholder {
-  color: #ccc;
+  color: #837d7d;
 }
 
 .table-heading{
@@ -107,7 +107,8 @@ body{
   color: #ccc;
   font-size: 20px;
   padding-left: 10px;
-  margin-right: 15px
+  margin-right: 15px;
+  text-align: justify;
 }
 
 .list-item{
@@ -122,6 +123,11 @@ body{
 .completeBtn{
   color: #ff6c6c;
   margin-right: 10px;
+}
+
+p.list.done {
+  text-decoration: line-through;
+  opacity: 0.4;
 }
 
 .editBtn{

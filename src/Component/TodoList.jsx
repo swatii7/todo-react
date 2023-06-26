@@ -1,23 +1,26 @@
-import React, { useState } from 'react'
-import {Check2Circle,PencilSquare,Trash3Fill } from 'react-bootstrap-icons';
+import React from 'react';
+import { Check2Circle, PencilSquare, Trash3Fill } from 'react-bootstrap-icons';
 
 export default function TodoList(props) {
 
-    
-      return (
-    <div style={{textAlign: 'center'}}>
-    {props.todoList.map((item,index)=>
-    <li key={index} className='list-item'>
-      <input type='text' value={item} className='list' onChange={e => e.preventDefault()} />
-      <div className='icons'>
-      <Check2Circle className='completeBtn' onClick={() => props.onComplete(todoList.id)} />
-          <PencilSquare className='editBtn' onClick={() => props.onedit(index)} />
-          <Trash3Fill className='deleteBtn' onClick={() => props.onDelete(index)} />
-          
-        
-      </div>
-    </li>
-    )}
+  const {onComplete, onedit, onDelete, todoList } = props;
+  return (
+    <div style={{ textAlign: 'center' }}>
+      {todoList.map((item, index) => (
+        <li
+          key={index}
+          className="list-item"
+        >
+          <p type="text" value={item} className= {item.complete  ? "list done" : "list"} onChange={e => e.preventDefault()}>{item.title}</p> 
+          <div className= "icons">
+            {!item.completed && (
+              <Check2Circle className="completeBtn" onClick={(e)=> onComplete(item.id)} style={{ textDecoration: todoList.completed ? 'line-through' : 'none' }} />
+            )}
+            <PencilSquare className="editBtn" onClick={() => onedit(index)} />
+            <Trash3Fill className="deleteBtn" onClick={() => onDelete(index)} />
+          </div>
+        </li>
+      ))}
     </div>
-  )
+  );
 }
