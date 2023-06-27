@@ -1,51 +1,32 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup'; 
 import TodoList from './TodoList';
-import { SnackbarProvider, enqueueSnackbar } from 'notistack'
+import { SnackbarProvider, enqueueSnackbar } from 'notistack';
+import axios from 'axios';
 
 export default function Todo() {
 
-  const daily_task = [ {
-    id: 1,
-    title: 'walk',
-    complete: false 
-   }, 
-   {
-    id: 2,
-    title: 'Go to Temple',
-    complete: false 
-   },
-   {
-    id: 3,
-    title: 'Make breakfast',
-    complete: false 
-   },
-   {
-    id: 4,
-    title: 'study',
-    complete: false 
-   },
-   {
-    id: 5,
-    title: 'sleep',
-    complete: false 
-   }
-  ]
-  
-
   const [inputText, setInputText] = useState('')
-  const [todoList, setTodoList] = useState(daily_task)
+  const [todoList, setTodoList] = useState([])
   const [editTodo, setEditTodo] = useState('')
+
+  useEffect(()=>{
+    axios.get('https://dummyjson.com/todos').then((response) => {
+      setTodoList(response.data.todos)
+      console.log(response.data.todos)
+    })
+  }, [])
   
 //add todo
   function addTaskHandler (e){
     if(inputText){
       let num = todoList.length + 1;
-      let newTask = {id: num, title: inputText, complete: false}
+      let newTask = {id: num, todo: inputText, complete: false}
      setTodoList([...todoList, newTask]);
      setInputText('')
+   
     }
   }
 
@@ -62,17 +43,16 @@ setTodoList(completeTodo)
 
 //edit todo
   function editHandler (i){
-    console.log('edited')
     setEditTodo(i)
     const updatedTodo = [...todoList]
-    setInputText(updatedTodo[i].title )
+    setInputText(updatedTodo[i].todo )
    }
 
 //edit and update edited todo
 function updateTaskHandler(e) {
   e.preventDefault();
 const getupdatedTodo= [...todoList]
-getupdatedTodo[editTodo].title= inputText
+getupdatedTodo[editTodo].todo= inputText
 setTodoList(getupdatedTodo)
 setInputText('')
 setEditTodo('')
@@ -81,9 +61,7 @@ setEditTodo('')
 //delete todo
 function deleteHandler(i){
   const filteredTodoList = todoList.filter((item,index) => i!== index)
-  console.log(filteredTodoList)
   setTodoList(filteredTodoList)
-
 }
 
   return (

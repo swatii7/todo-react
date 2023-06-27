@@ -11,9 +11,9 @@ export default function TodoList(props) {
           key={index}
           className="list-item"
         >
-          <p type="text" value={item} className= {item.complete  ? "list done" : "list"} onChange={e => e.preventDefault()}>{item.title}</p> 
+          <p type="text" value={item} className= {item.complete  ? "list done" : "list"} onChange={e => e.preventDefault()}>{item.todo}</p> 
           <div className= "icons">
-            {!item.completed && (
+            {(
               <Check2Circle className="completeBtn" onClick={(e)=> onComplete(item.id)} style={{ textDecoration: todoList.completed ? 'line-through' : 'none' }} />
             )}
             <PencilSquare className="editBtn" onClick={() => onedit(index)} />
